@@ -1,3 +1,36 @@
-<h1>Alon 100 seocnd </h1>
-
-<h1>Alon 99 seocnd </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Runner</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Script Runner</h1>
+    </header>
+    <main>
+        <section id="script-selection">
+            <h2>Select a Script</h2>
+            <select id="script-dropdown">
+                <option value="">Choose a script...</option>
+                <option value="srtt-rttvar">SRTT and RTTVAR Calculator</option>
+                <option value="rpf-small">RPF on Small Graph</option>
+                <option value="rpf-full">RPF on Full Graph</option>
+            </select>
+        </section>
+        <section id="input-section">
+            <h2>Input</h2>
+            <textarea id="input-area" rows="5" placeholder="Enter input here..."></textarea>
+        </section>
+        <section id="output-section">
+            <h2>Output</h2>
+            <pre id="output-area"></pre>
+        </section>
+        <button id="run-button">Run Script</button>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
