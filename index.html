@@ -1,36 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Script Runner</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
     <header>
-        <h1>Script Runner</h1>
+      <h1>Script Runner</h1>
     </header>
+
     <main>
-        <section id="script-selection">
-            <h2>Select a Script</h2>
-            <select id="script-dropdown">
-                <option value="">Choose a script...</option>
-                <option value="srtt-rttvar">SRTT and RTTVAR Calculator</option>
-                <option value="rpf-small">RPF on Small Graph</option>
-                <option value="rpf-full">RPF on Full Graph</option>
-            </select>
-        </section>
-        <section id="input-section">
-            <h2>Input</h2>
-            <textarea id="input-area" rows="5" placeholder="Enter input here..."></textarea>
-        </section>
-        <section id="output-section">
-            <h2>Output</h2>
-            <pre id="output-area"></pre>
-        </section>
-        <button id="run-button">Run Script</button>
+      <!-- Tab navigation for chapters -->
+      <div class="tab-container">
+        <div class="tab active" data-tab="chapter3">
+          Chapter 3: Hamming & CRC
+        </div>
+        <div class="tab" data-tab="chapter4">Chapter 4</div>
+        <div class="tab" data-tab="chapter5">
+          Chapter 5: Distance Vectors Routing
+        </div>
+        <div class="tab" data-tab="chapter6">Chapter 6</div>
+      </div>
+
+      <!-- Chapter 3: Hamming and CRC -->
+      <div id="chapter3" class="tab-content active">
+        <h2>Chapter 3: Hamming Code & CRC Code</h2>
+
+        <!-- Hamming Code Section -->
+        <h3>Hamming Code</h3>
+        <p>Enter the binary data word:</p>
+        <input
+          type="text"
+          id="hamming-input"
+          placeholder="Enter binary data word"
+        />
+        <button id="hamming-run">Run Hamming Code</button>
+        <div id="hamming-output" class="output-area"></div>
+
+        <!-- CRC Code Section -->
+        <h3>CRC Code</h3>
+        <p>Enter the data word and generator polynomial (binary):</p>
+        <input type="text" id="crc-data-word" placeholder="Enter data word" />
+        <input
+          type="text"
+          id="crc-generator"
+          placeholder="Enter generator polynomial"
+        />
+        <button id="crc-run">Run CRC Code</button>
+        <div id="crc-output" class="output-area"></div>
+      </div>
+
+      <!-- Chapter 4 Placeholder -->
+      <div id="chapter4" class="tab-content">
+        <h2>Chapter 4: Coming Soon</h2>
+        <p>Content for this chapter will be added in the future.</p>
+      </div>
+
+      <!-- Chapter 5: Distance Vectors Routing -->
+      <div id="chapter5" class="tab-content">
+        <h2>Chapter 5: Distance Vectors Routing</h2>
+        <p>Enter the starting station (B or F):</p>
+        <input
+          type="text"
+          id="distance-input"
+          placeholder="Enter starting station (B or F)"
+        />
+        <button id="distance-run">Run Distance Vectors Routing</button>
+        <div id="distance-output" class="output-area"></div>
+      </div>
+
+      <!-- Chapter 6 Placeholder -->
+      <div id="chapter6" class="tab-content">
+        <h2>Chapter 6: Coming Soon</h2>
+        <p>Content for this chapter will be added in the future.</p>
+      </div>
     </main>
-    <script src="script.js"></script>
-</body>
+
+    <script>
+      // Tab switching logic
+      const tabs = document.querySelectorAll(".tab");
+      const tabContents = document.querySelectorAll(".tab-content");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          tabContents.forEach((tc) => tc.classList.remove("active"));
+
+          tab.classList.add("active");
+          document.getElementById(tab.dataset.tab).classList.add("active");
+        });
+      });
+
+      // Load external scripts for each function
+      function loadScript(scriptUrl) {
+        const script = document.createElement("script");
+        script.src = scriptUrl;
+        document.body.appendChild(script);
+      }
+
+      // Load each script
+      loadScript("scripts/distance_vectors_routing.js");
+      loadScript("scripts/crc.js");
+      loadScript("scripts/hamming.js");
+
+      // Script for Hamming Code (Chapter 3)
+      document.getElementById("hamming-run").addEventListener("click", () => {
+        const data = document.getElementById("hamming-input").value;
+        const hammingCode = calculateHammingCode(data);
+        const overhead = calculateOverhead(hammingCode);
+        const isValid = checkHammingCode(hammingCode);
+        document.getElementById(
+          "hamming-output"
+        ).innerText = `Hamming Code: ${hammingCode}\nOverhead: ${overhead}\nValid: ${isValid}`;
+      });
+
+      // Script for CRC Code (Chapter 3)
+      document.getElementById("crc-run").addEventListener("click", () => {
+        const dataWord = document.getElementById("crc-data-word").value;
+        const generator = document.getElementById("crc-generator").value;
+        const { codeword, overhead } = crc(dataWord, generator);
+        const isValid = checkCodeword(codeword, generator);
+        document.getElementById(
+          "crc-output"
+        ).innerText = `Codeword: ${codeword}\nOverhead: ${overhead}\nValid: ${isValid}`;
+      });
+
+      // Script for Distance Vectors Routing (Chapter 5)
+      document.getElementById("distance-run").addEventListener("click", () => {
+        const start = document
+          .getElementById("distance-input")
+          .value.toUpperCase();
+        const result = findMinDistance(start, distances);
+        let output = "";
+        for (const dest in result) {
+          output += `Destination: ${dest}, Line: ${result[dest].line}, Distance: ${result[dest].distance}\n`;
+        }
+        document.getElementById("distance-output").innerText = output;
+      });
+    </script>
+  </body>
 </html>

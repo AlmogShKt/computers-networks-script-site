@@ -5,6 +5,7 @@ function computeRPFPackets(graph, source) {
     function rpf(node, parent) {
         // Mark the node as visited
         visited.add(node);
+
         // Increment packet count for each child node except the parent
         for (let neighbor of graph[node]) {
             if (neighbor !== parent) {
@@ -18,6 +19,7 @@ function computeRPFPackets(graph, source) {
 
     // Start the RPF from the source node
     rpf(source, null);
+    
     return packetCount;
 }
 
@@ -43,6 +45,7 @@ const smallGraph = {
 // Generate a fully connected graph with 108 nodes
 const n = 108;
 const fullGraph = {};
+
 // Initialize the graph with each node connected to every other node
 for (let i = 1; i <= n; i++) {
     fullGraph[i] = [];
@@ -53,18 +56,12 @@ for (let i = 1; i <= n; i++) {
     }
 }
 
-// Function to run RPF algorithm
-function runRPF(graphType) {
-    console.log("s")
-    let graph, source;
-    if (graphType === 'small') {
-        graph = smallGraph;
-        source = 1;
-    } else {
-        graph = fullGraph;
-        source = 1;
-    }
+// Test on the smaller graph
+const smallSource = 1; // Source node for small graph
+const smallTotalPackets = computeRPFPackets(smallGraph, smallSource);
+console.log(`Total packets sent in the small graph: ${smallTotalPackets}`);
 
-    const totalPackets = computeRPFPackets(graph, source);
-    return `Total packets sent in the ${graphType} graph: ${totalPackets}`;
-}
+// Test on the fully connected graph
+const fullSource = 1; // Source node for full graph
+const fullTotalPackets = computeRPFPackets(fullGraph, fullSource);
+console.log(`Total packets sent in the fully connected graph: ${fullTotalPackets}`);
