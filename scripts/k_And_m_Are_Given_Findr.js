@@ -12,11 +12,11 @@ function binomialCoefficient(n, k) {
     return factorial(n) / (factorial(k) * factorial(n - k));
 }
 
-function findMinimumR(m, k) {
+function findMinimumRForCorrection(m, k) {
     let r = 0;
 
     while (true) {
-        let sum = 1; // start with the initial 1 in the formula
+        let sum = 1; // Start with the initial 1 in the formula
 
         for (let i = 0; i <= k; i++) {
             sum += binomialCoefficient(m + r, i);
@@ -30,8 +30,20 @@ function findMinimumR(m, k) {
     }
 }
 
-// Example usage:
-let m = 7; // length of info word
-let k = 3; // to fix k sibiot
-let minimumR = findMinimumR(m, k);
-console.log("Minimum r:", minimumR);
+// Function to handle the button click for finding minimum r
+function onFindRButtonClick() {
+    const m = parseInt(document.getElementById('dataWord').value);
+    const k = parseInt(document.getElementById('numErrors').value);
+    
+    // Validate inputs
+    if (isNaN(m) || isNaN(k) || m < 0 || k < 0) {
+        alert("Please enter valid non-negative numbers for m and k.");
+        return;
+    }
+
+    const r = findMinimumRForCorrection(m, k);
+    document.getElementById('r-output').innerText = `Minimum r: ${r}`;
+}
+
+// Add event listener for the button click
+document.getElementById('find-r-run').addEventListener('click', onFindRButtonClick);
