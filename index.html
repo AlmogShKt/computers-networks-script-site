@@ -50,6 +50,23 @@
         />
         <button id="crc-run">Run CRC Code</button>
         <div id="crc-output" class="output-area"></div>
+
+        <!-- Minimum r for Error Correction Section -->
+        <h3>Calculate Minimum r for Error Correction</h3>
+        <p>Enter the length of data word (m):</p>
+        <input
+          type="number"
+          id="dataWord"
+          placeholder="Enter m"
+        />
+        <p>Enter the number of errors to correct (k):</p>
+        <input
+          type="number"
+          id="numErrors"
+          placeholder="Enter k"
+        />
+        <button id="find-r-run">Find Minimum r</button>
+        <div id="r-output" class="output-area"></div>
       </div>
 
       <!-- Chapter 4 Placeholder -->
@@ -104,6 +121,7 @@
       loadScript("scripts/distance_vectors_routing.js");
       loadScript("scripts/crc.js");
       loadScript("scripts/hamming.js");
+      loadScript("scripts/k_And_m_Are_Given_Findr.js");
 
       // Script for Hamming Code (Chapter 3)
       document.getElementById("hamming-run").addEventListener("click", () => {
@@ -125,6 +143,14 @@
         document.getElementById(
           "crc-output"
         ).innerText = `Codeword: ${codeword}\nOverhead: ${overhead}\nValid: ${isValid}`;
+      });
+
+      // Script for Minimum r Calculation (Chapter 3)
+      document.getElementById("find-r-run").addEventListener("click", () => {
+        const m = parseInt(document.getElementById("dataWord").value);
+        const k = parseInt(document.getElementById("numErrors").value);
+        const r = findMinimumRForCorrection(m, k); // Function from kAndmAreGivenFindr.js
+        document.getElementById("r-output").innerText = `Minimum r: ${r}`;
       });
 
       // Script for Distance Vectors Routing (Chapter 5)
