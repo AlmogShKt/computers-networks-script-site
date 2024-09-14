@@ -45,5 +45,7 @@ function onFindRButtonClick() {
     document.getElementById('r-output').innerText = `Minimum r: ${r}`;
 }
 
-// Add event listener for the button click
-document.getElementById('find-r-run').addEventListener('click', onFindRButtonClick);
+// Wait for the DOM to fully load before adding the event listener
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('find-r-run').addEventListener('click', onFindRButtonClick);
+});
