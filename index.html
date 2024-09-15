@@ -126,6 +126,7 @@
       loadScript("scripts/crc.js");
       loadScript("scripts/hamming.js");
       loadScript("scripts/k_And_m_Are_Given_Findr.js");
+      loadScript("scripts/RPF.js");
 
       // Script for Hamming Code (Chapter 3)
       document.getElementById("hamming-run").addEventListener("click", () => {
@@ -169,6 +170,15 @@
         }
         document.getElementById("distance-output").innerText = output;
       });
+      // Script for RPF Calculation (Chapter 5)
+  document.getElementById("rpf-run").addEventListener("click", () => {
+    const sourceNode = parseInt(document.getElementById("rpf-source").value);
+    
+    // שימוש בגרף קטן לדוגמה שהוגדר מראש
+    const totalPackets = computeRPFPackets(smallGraph, sourceNode);
+    
+    document.getElementById("rpf-output").innerText = `סה"כ חבילות שנשלחו בגרף הקטן: ${totalPackets}`;
+  });
     </script>
   </body>
 </html>
