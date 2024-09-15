@@ -91,7 +91,15 @@
         <button id="distance-run">Run Distance Vectors Routing</button>
         <div id="distance-output" class="output-area"></div>
       </div>
+ <!-- RPF Section -->
+  <h3>Reverse Path Forwarding (RPF)</h3>
+  <p>הפונקציה הבאה מחשבת את מספר ה"חבילות" (packets) שנשלחות ברשת במהלך תהליך Reverse Path Forwarding (RPF), שבו כל צומת שולח חבילות לכל צומת שכן שלו פרט לצומת שממנו הגיעו החבילות.</p>
+  <p>בחר את הצומת ההתחלתי (מספר בין 1 ל-15 עבור הגרף הקטן לדוגמה):</p>
+  <input type="number" id="rpf-source" placeholder="בחר צומת התחלה" min="1" max="15" />
+  <button id="rpf-run">חשב חבילות RPF</button>
+  <div id="rpf-output" class="output-area"></div>
 
+</div>
       <!-- Chapter 6 Placeholder -->
       <div id="chapter6" class="tab-content">
         <h3>Chapter 6: Coming Soon</h3>
