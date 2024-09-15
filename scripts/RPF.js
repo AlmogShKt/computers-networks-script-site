@@ -23,7 +23,7 @@ function computeRPFPackets(graph, source) {
     return packetCount;
 }
 
-// Smaller graph representation based on the provided image
+// Smaller graph representation
 const smallGraph = {
     1: [5, 6],
     2: [12, 3],
@@ -41,27 +41,3 @@ const smallGraph = {
     14: [13, 15, 9],
     15: [10, 14]
 };
-
-// Generate a fully connected graph with 108 nodes
-const n = 108;
-const fullGraph = {};
-
-// Initialize the graph with each node connected to every other node
-for (let i = 1; i <= n; i++) {
-    fullGraph[i] = [];
-    for (let j = 1; j <= n; j++) {
-        if (i !== j) {
-            fullGraph[i].push(j);
-        }
-    }
-}
-
-// Test on the smaller graph
-const smallSource = 1; // Source node for small graph
-const smallTotalPackets = computeRPFPackets(smallGraph, smallSource);
-console.log(`Total packets sent in the small graph: ${smallTotalPackets}`);
-
-// Test on the fully connected graph
-const fullSource = 1; // Source node for full graph
-const fullTotalPackets = computeRPFPackets(fullGraph, fullSource);
-console.log(`Total packets sent in the fully connected graph: ${fullTotalPackets}`);
