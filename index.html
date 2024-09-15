@@ -91,11 +91,24 @@
         <button id="distance-run">Run Distance Vectors Routing</button>
         <div id="distance-output" class="output-area"></div>
       </div>
- <!-- RPF Section -->
+<!-- RPF Section -->
   <h3>Reverse Path Forwarding (RPF)</h3>
-  <p>הפונקציה הבאה מחשבת את מספר ה"חבילות" (packets) שנשלחות ברשת במהלך תהליך Reverse Path Forwarding (RPF), שבו כל צומת שולח חבילות לכל צומת שכן שלו פרט לצומת שממנו הגיעו החבילות.</p>
-  <p>בחר את הצומת ההתחלתי (מספר בין 1 ל-15 עבור הגרף הקטן לדוגמה):</p>
-  <input type="number" id="rpf-source" placeholder="בחר צומת התחלה" min="1" max="15" />
+  <p>הוסף צמתים וקשרים כדי לבנות את הגרף:</p>
+  <p>הוסף צומת:</p>
+  <input type="number" id="node-input" placeholder="מספר הצומת" />
+  <button id="add-node">הוסף צומת</button>
+  <p>הוסף קשר:</p>
+  <input type="number" id="from-node" placeholder="צומת מקור" />
+  <input type="number" id="to-node" placeholder="צומת יעד" />
+  <button id="add-edge">הוסף קשר</button>
+  <button id="clear-graph">נקה את הגרף</button>
+
+  <!-- Graph Preview -->
+  <h4>תצוגה מקדימה של הגרף:</h4>
+  <pre id="graph-preview" class="output-area"></pre>
+
+  <p>בחר את הצומת ההתחלתי (מספר):</p>
+  <input type="number" id="rpf-source" placeholder="בחר צומת התחלה" />
   <button id="rpf-run">חשב חבילות RPF</button>
   <div id="rpf-output" class="output-area"></div>
 
@@ -179,14 +192,79 @@
         document.getElementById("distance-output").innerText = output;
       });
       // Script for RPF Calculation (Chapter 5)
-  document.getElementById("rpf-run").addEventListener("click", () => {
-    const sourceNode = parseInt(document.getElementById("rpf-source").value);
-    
-    // שימוש בגרף קטן לדוגמה שהוגדר מראש
-    const totalPackets = computeRPFPackets(smallGraph, sourceNode);
-    
-    document.getElementById("rpf-output").innerText = `סה"כ חבילות שנשלחו בגרף הקטן: ${totalPackets}`;
-  });
+  // משתנה עבור הגרף
+const graph = {};
+
+// פונקציה לעדכון התצוגה המקדימה של הגרף
+function updateGraphPreview() {
+  let graphPreview = '';
+  for (const node in graph) {
+    graphPreview += `צומת ${node}: שכנים -> ${graph[node].join(', ')}\n`;
+  }
+  document.getElementById("graph-preview").innerText = graphPreview;
+}
+
+// הוספת צומת לגרף
+document.getElementById("add-node").addEventListener("click", () => {
+  const node = parseInt(document.getElementById("node-input").value);
+
+  if (!isNaN(node)) {
+    if (!graph[node]) {
+      graph[node] = [];
+      document.getElementById("rpf-output").innerText = `צומת ${node} נוסף בהצלחה.`;
+      updateGraphPreview();
+    } else {
+      document.getElementById("rpf-output").innerText = `צומת ${node} כבר קיים.`;
+    }
+  } else {
+    document.getElementById("rpf-output").innerText = "מספר צומת לא תקין.";
+  }
+});
+
+// הוספת קשר בין צמתים
+document.getElementById("add-edge").addEventListener("click", () => {
+  const fromNode = parseInt(document.getElementById("from-node").value);
+  const toNode = parseInt(document.getElementById("to-node").value);
+
+  if (!isNaN(fromNode) && !isNaN(toNode)) {
+    if (graph[fromNode] && graph[toNode]) {
+      if (!graph[fromNode].includes(toNode)) graph[fromNode].push(toNode);
+      if (!graph[toNode].includes(fromNode)) graph[toNode].push(fromNode);
+      document.getElementById("rpf-output").innerText = `קשר נוסף בין צומת ${fromNode} לצומת ${toNode}.`;
+      updateGraphPreview();
+    } else {
+      document.getElementById("rpf-output").innerText = "אחד מהצמתים אינו קיים.";
+    }
+  } else {
+    document.getElementById("rpf-output").innerText = "מספרי צמתים לא תקינים.";
+  }
+});
+
+// ניקוי הגרף
+document.getElementById("clear-graph").addEventListener("click", () => {
+  for (const node in graph) {
+    delete graph[node];
+  }
+  document.getElementById("rpf-output").innerText = "הגרף נוקה.";
+  updateGraphPreview();
+});
+
+// חישוב חבילות RPF
+document.getElementById("rpf-run").addEventListener("click", () => {
+  const sourceNode = parseInt(document.getElementById("rpf-source").value);
+
+  if (isNaN(sourceNode) || !graph[sourceNode]) {
+    document.getElementById("rpf-output").innerText = "צומת ההתחלה אינו תקין או לא קיים בגרף.";
+    return;
+  }
+
+  // חישוב סה"כ חבילות שנשלחו בגרף
+  const totalPackets = computeRPFPackets(graph, sourceNode);
+  
+  document.getElementById("rpf-output").innerText = `סה"כ חבילות שנשלחו: ${totalPackets}`;
+  updateGraphPreview();
+});
+
     </script>
   </body>
 </html>
